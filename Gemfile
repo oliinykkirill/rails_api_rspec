@@ -9,4 +9,8 @@ gem "bootsnap", require: false
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "rspec-rails", "~> 6.1.3"
+  gem "factory_bot_rails", "~> 6.4.3"
+  gem "faker", "~> 3.3.0"
+  gem "simplecov", "~> 0.22.0", require: false
 end
