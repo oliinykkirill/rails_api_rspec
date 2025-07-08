@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      # API v1 endpoints
+      resources :users, only: [:show]
     end
   end
 end
