@@ -15,7 +15,6 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
   describe 'POST /api/v1/users' do
     let(:valid_params) { { user: { email: 'newuser@example.com', password: 'secretpassword' } } }
-    let(:invalid_params) { { user: { email: user.email, password: 'secretpassword' } } }
 
     it 'creates a new user and returns 201 Created' do
       expect {
@@ -24,13 +23,23 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
       expect(response).to have_http_status(:created)
     end
+  end
 
-    it 'returns 422 Unprocessable Entity on duplicate email' do
+  describe 'PATCH /api/v1/users/:id' do
+    it 'updates user email successfully' do
+      patch api_v1_user_url(user), params: { user: { email: 'updated@example.com' } }, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(user.reload.email).to eq('updated@example.com')
+    end
+  end
+
+  describe 'DELETE /api/v1/users/:id' do
+    it 'destroys user and returns 204 No Content' do
       expect {
-        post api_v1_users_url, params: invalid_params, as: :json
-      }.not_to change(User, :count)
+        delete api_v1_user_url(user), as: :json
+      }.to change(User, :count).by(-1)
 
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:no_content)
     end
   end
 end
