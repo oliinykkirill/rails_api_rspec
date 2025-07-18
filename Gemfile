@@ -6,6 +6,7 @@ gem "json", "~> 2.8"
 gem "puma", ">= 5.0"
 gem "bcrypt", "~> 3.1.20"
 gem "jwt", "~> 2.8.1"
+gem "jsonapi-serializer", "~> 2.2.0"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 
