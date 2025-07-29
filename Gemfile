@@ -8,8 +8,13 @@ gem "bcrypt", "~> 3.1.20"
 gem "jwt", "~> 2.8.1"
 gem "jsonapi-serializer", "~> 2.2.0"
 gem "kaminari", "~> 1.2.2"
+gem "rack-cors", "~> 2.0.1"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
+
+group :development do
+  gem "bullet", "~> 7.1.5", require: false
+end
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

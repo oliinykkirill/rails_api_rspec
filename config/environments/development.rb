@@ -12,4 +12,11 @@ Rails.application.configure do
 
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.perform_caching = false
+
+  config.after_initialize do
+    if defined?(Bullet)
+      Bullet.enable = true
+      Bullet.rails_logger = true
+    end
+  end
 end
