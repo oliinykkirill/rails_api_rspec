@@ -19,6 +19,22 @@ RSpec.describe 'Api::V1::Orders', type: :request do
     end
   end
 
+  describe 'GET /api/v1/orders/:id' do
+    it 'returns order details for logged in user' do
+      get api_v1_order_url(order), headers: auth_header, as: :json
+      expect(response).to have_http_status(:success)
+
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json.dig(:data, :id)).to eq(order.id.to_s)
+      expect(json.dig(:included, 0, :id)).to eq(product1.id.to_s)
+    end
+
+    it 'returns 404 for non-existent order' do
+      get api_v1_order_url(id: 999999), headers: auth_header, as: :json
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   describe 'POST /api/v1/orders' do
     it 'creates an order with products and calculates total automatically' do
       order_params = {
@@ -36,6 +52,18 @@ RSpec.describe 'Api::V1::Orders', type: :request do
 
       expect(response).to have_http_status(:created)
       expect(Order.last.total).to eq(product1.price * 2 + product2.price * 3)
+    end
+
+    it 'returns unprocessable entity when ordered quantity exceeds stock' do
+      order_params = {
+        order: {
+          product_ids_and_quantities: [
+            { product_id: product1.id, quantity: 999 }
+          ]
+        }
+      }
+      post api_v1_orders_url, params: order_params, headers: auth_header, as: :json
+      expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 end

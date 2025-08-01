@@ -22,5 +22,10 @@ RSpec.describe Product, type: :model do
       results = Product.search(keyword: 'tv', min_price: 100, max_price: 500)
       expect(results).to contain_exactly(cheap_tv)
     end
+
+    it 'sorts products with recent scope' do
+      cheap_tv.touch
+      expect(Product.recent.to_a).to eq([expensive_tv, laptop, cheap_tv])
+    end
   end
 end

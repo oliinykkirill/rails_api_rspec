@@ -10,7 +10,7 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def show
-    order = current_user.orders.find(params[:id])
+    order = current_user.orders.find_by(id: params[:id])
     if order
       options = { include: [:products] }
       render json: OrderSerializer.new(order, options).serializable_hash.to_json
