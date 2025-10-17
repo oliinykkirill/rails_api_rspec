@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 8.0.0"
-gem "sqlite3", ">= 2.1"
+gem "pg", "~> 1.5"
 gem "json", "~> 2.8"
 gem "puma", ">= 5.0"
 gem "bcrypt", "~> 3.1.20"
