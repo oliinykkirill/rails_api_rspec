@@ -24,7 +24,8 @@ class Product < ApplicationRecord
 
   def self.search(params = {})
     products = params[:product_ids].present? ? Product.where(id: params[:product_ids]) : Product.all
-    products = products.filter_by_title(params[:keyword]) if params[:keyword]
+    keyword = params[:keyword].presence || params[:keywords].presence
+    products = products.filter_by_title(keyword) if keyword
     products = products.above_or_equal_to_price(params[:min_price].to_f) if params[:min_price]
     products = products.below_or_equal_to_price(params[:max_price].to_f) if params[:max_price]
     products = products.recent if params[:recent]
