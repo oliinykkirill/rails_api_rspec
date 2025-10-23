@@ -28,6 +28,7 @@ class Product < ApplicationRecord
     products = products.filter_by_title(keyword) if keyword
     products = products.above_or_equal_to_price(params[:min_price].to_f) if params[:min_price]
     products = products.below_or_equal_to_price(params[:max_price].to_f) if params[:max_price]
+    products = products.where(user_id: params[:user_id]) if params[:user_id].present?
     products = products.recent if params[:recent]
     products
   end
