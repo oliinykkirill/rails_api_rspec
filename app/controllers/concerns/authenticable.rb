@@ -5,8 +5,12 @@ module Authenticable
     return nil if header.blank?
 
     token = header.start_with?("Bearer ") ? header.split(" ", 2).last : header
-    decoded = JsonWebToken.decode(token)
-    @current_user = User.find(decoded[:user_id]) rescue ActiveRecord::RecordNotFound
+    begin
+      decoded = JsonWebToken.decode(token)
+      @current_user = User.find(decoded[:user_id])
+    rescue JWT::DecodeError, ActiveRecord::RecordNotFound
+      nil
+    end
   end
 
   protected
